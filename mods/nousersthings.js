@@ -3355,7 +3355,7 @@ elements.e_void = {
     name: "e-void"
 }
 elements.smart_anti_void = {
-    color: "#bdffed",
+    color: "#92c6b8",
     category: "special",
     movable: false,
     behavior: behaviors.WALL,
@@ -3378,7 +3378,7 @@ elements.smart_anti_void = {
     grain: 0
 }
 elements.smart_anti_e_void = {
-    color: "#fffebd",
+    color: "#bfbe7c",
     category: "machines",
     movable: false,
     behavior: behaviors.WALL,
@@ -3597,4 +3597,66 @@ tryMove = function(...args){
     if (eLists.UNMOVABLE[elements[pixel.element].id]){return false} else{
         return oldTryMove.apply(undefined, args)
     }
+}
+elements.instant_wire = {
+    color: "#27382d",
+    behavior: behaviors.WALL,
+    category: "machines",
+    properties: {
+        sending: 0, // -1: overwritten, 0: neutral, 1: sending
+        iCharge: 0,
+        mode: 0, // 0: uncharge, 1: charge
+        lastUpdate: 0,
+        cooldown: 0
+    },
+    iConduct: 1,
+    tick: function(pixel){
+        if (pixel.sending = 0){ // if neutral, see if mode should change
+            for (let i=0;i<adjacentCoords.length;i++){
+                let coord = adjacentCoords[i]
+                let x = pixel.x+adjacentCoords[0]
+                let y = pixel.y+adjacentCoords[1]
+                if (!isEmpty(x, y, true)){
+                    let otherPixel = pixelMap[x][y]
+                    if (otherPixel.charge){
+                        pixel.sending = 1
+                        pixel.cooldown = 5
+                        pixel.iCharge = true
+                    }
+                }
+            }
+        } else if (pixel.sending = 1){
+            if (pixel.cooldown > 0){pixel.cooldown -= 1} else {pixel.mode = 0; pixel.iCharge = false}
+            if (pixel.mode = 0){ // if uncharging, send request and become neutral
+                for (let i=0;i<adjacentCoords.length;i++){
+                    let coord = adjacentCoords[i]
+                    let x = pixel.x+adjacentCoords[0]
+                    let y = pixel.y+adjacentCoords[1]
+                    if (!isEmpty(pixelMap[x][y])){
+                        let otherPixel = pixelMap[x][y]
+                        if (elements[otherPixel.element].iConduct && elemenets[otherPixel.element].iUncharge){
+                            elements[otherPixel.element].iUncharge(otherPixel, pixel)
+                        }
+                    }
+                }
+                pixel.sending = 0
+                pixel.lastUpdate = pixelTicks
+            } else if (pixel.mode = 1){ // if charging, send request
+                for (let i=0;i<adjacentCoords.length;i++){
+                    let coord = adjacentCoords[i]
+                    let x = pixel.x+adjacentCoords[0]
+                    let y = pixel.y+adjacentCoords[1]
+                    if (!isEmpty(pixelMap[x][y])){
+                        let otherPixel = pixelMap[x][y]
+                        if (elements[otherPixel.element].iConduct && elemenets[otherPixel.element].iCharge){
+                            elements[otherPixel.element].iCharge(otherPixel, pixel)
+                        }
+                    }
+                }
+                pixel.lastUpdate = pixelTicks
+            }
+        }
+    },
+    iUncharge: function(pixel, otherPixel){},
+    iCharge: function(pixel, otherPixel){}
 }
