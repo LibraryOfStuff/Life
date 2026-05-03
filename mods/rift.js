@@ -21,7 +21,7 @@ elements.THE_SPREAD= {
     category: "special",
     state: "solid"
 }
-//i know the spread or wierd stuff dosent work and i wont fix it.
+//i know the spread or weird stuff dosent work and i wont fix it.
 behaviors.spread = [
     "CR:THE_SPREAD|CR:THE_SPREAD|CR:THE_SPREAD",
     "CR:THE_SPREAD|CR:THE_SPREAD|CR:THE_SPREAD",
