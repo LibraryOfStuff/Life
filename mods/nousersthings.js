@@ -3725,20 +3725,7 @@ elements.iwifi_receiver = {
         }
     },
     iCharge: function(pixel, otherPixel){
-        pixel.lastUpdate = pixelTicks;
-        for (let i of adjacentCoords){
-            let x = pixel.x + i[0]
-            let y = pixel.y + i[1]
-            if (!isEmpty(x, y, true)){
-                let spreadPixel = pixelMap[x][y]
-                if (elements[spreadPixel.element].iConduct){
-                    elements[spreadPixel.element].iCharge(spreadPixel, pixel)
-                }
-                if (elements[spreadPixel.element].conduct && !spreadPixel.chargeCD && !spreadPixel.charge){
-                    chargePixel(spreadPixel)
-                }
-            }
-        }
+        iChargeCooldown(pixel, 0)
     }
 }
 elements.ilamp = {
