@@ -14,8 +14,9 @@
 // Merge tool merges all the neutrons, protons and electrons in a Nucleus and makes the element.
 
 // Changelog 1.0.1
-// fixed: if there was no electrons in a nucleus when it got merged it did not explode.
-// chore: code formatting
+// fix: fixed bug if there was no electrons in a nucleus when it got merged it did not explode.
+// chore: some code formatting
+// feat: made the merge tool look cool.
 
 // formula {"name": [neutrons, protons, electrons]} // isotope
 var listofelements = {
@@ -469,7 +470,7 @@ elements.add_electron = {
   },
 };
 elements.merge = {
-  color: ["#ffa6a6", "#a6ffff", "#146c09"],
+  color: ["#ffa6a6", "#000000", "#a6ffff", "#000000", "#146c09"],
   category: "tools",
   tool: function (pixel) {
     if (pixel != null && pixel.element == "nucleus") {
