@@ -3641,10 +3641,10 @@ elements.instant_wire = {
     },
     iConduct: 1,
     tick: function(pixel){
-        iCooldownTick(pixel, 2)
+        iCooldownTick(pixel, 4)
     },
     iCharge: function(pixel, otherPixel){
-        iChargeCooldown(pixel, 10)
+        iChargeCooldown(pixel, 9)
     },
     renderer: function(pixel, ctx){
         let _rgb = getPixelColor(pixel.color);
@@ -3735,7 +3735,7 @@ elements.ilamp = {
         iCooldownTick(pixel, -2)
     },
     iCharge: function(pixel, otherPixel){
-        iChargeCooldown(pixel, 10)
+        iChargeCooldown(pixel, 12)
     },
     renderer: function(pixel, ctx){
         let _rgb = getPixelColor(pixel.color);
