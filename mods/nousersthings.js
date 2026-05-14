@@ -3662,7 +3662,8 @@ elements.instant_wire_junction = {
     behavior: behaviors.WALL,
     category: "instant machines",
     properties: {
-        lastUpdate: 0
+        lastUpdate: 0,
+        cooldown: 1,
     },
     iCharge: function(pixel, otherPixel){
         let dir = [otherPixel.x-pixel.x, otherPixel.y-pixel.y]
@@ -3775,5 +3776,12 @@ elements.iswitch = {
             pixel.dir = [otherPixel.x-pixel.x, otherPixel.y-pixel.y]
         }
         if (otherPixel.x-pixel.x == pixel.dir[0] && otherPixel.y-pixel.y == pixel.dir[1]){pixel.iCharge = pixel.iCharge == 1 ? 0 : 1} 
+    }
+}
+const oldShockTool = elements.shock.tool;
+elements.shock.tool = function(pixel){
+    oldShockTool(pixel);
+    if (elements[pixel.element].iConduct && pixel.cooldown <= 0){
+        elements[pixel.element].iCharge(pixel, pixel)
     }
 }
