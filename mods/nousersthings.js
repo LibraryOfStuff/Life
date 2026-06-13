@@ -3628,7 +3628,7 @@ elements.e_void = {
     category: "machines",
     movable: false,
     behavior: behaviors.WALL,
-    ignore: ["wall", "wire", "e_wall", "e_void"],
+    ignore: ["wall", "wire", "e_wall"],
     conduct: 1,
     onShiftSelect: async () => {
         let ans = await _nousersthingsprompt("What elements should this e-void delete?", "")
@@ -3638,12 +3638,12 @@ elements.e_void = {
         if (pixel.charge){
             for (let i = 0; i<adjacentCoords.length;i++){
                 let x = pixel.x+adjacentCoords[i][0]
-                let y = pixel.y+adjacentCoords[i][0]
+                let y = pixel.y+adjacentCoords[i][1]
                 if (!isEmpty(x, y, true)){
                     let otherPixel = pixelMap[x][y]
                     if (typeof pixel.filter != "undefined"){
                         if(isElementInProperty(otherPixel.element, pixel.filter)){deletePixel(otherPixel.x, otherPixel.y)}
-                    } else if (!elements.e_void.ignore.includes(otherPixel.element)){deletePixel(otherPixel.x, otherPixel.y)}
+                    } else if (!elements.e_void.ignore.includes(otherPixel.element) && otherPixel.element != pixel.element){deletePixel(otherPixel.x, otherPixel.y)}
                 }
             }
         }
