@@ -2280,12 +2280,6 @@ elements.ray = {
         }
     }
 }
-var specificRayStart = 0
-var specificRayEnd = 20
-var specificRayAngle = 0
-var stopAtElement = "wall"
-var rayLife = 10
-var rainbowMode = "no"
 elements.specific_ray_emitter = {
     color: "#e73e63",
     behavior: behaviors.WALL,
@@ -2317,7 +2311,7 @@ elements.specific_ray_emitter = {
         } else {ans6 = null}
         let ans7
         if (ans1 == "ray"){
-            ans7 = parseInt(_nousersthingsprompt("How long should the ray stay on screen, in ticks?", 10))
+            ans7 = parseInt(await _nousersthingsprompt("How long should the ray stay on screen, in ticks?", 10))
         }
         currentElementProp = {
             emit: ans1,
@@ -3634,7 +3628,7 @@ elements.e_void = {
     category: "machines",
     movable: false,
     behavior: behaviors.WALL,
-    ignore: ["wall", "wire", "e_wall", "e_void"],
+    ignore: ["wall", "wire", "e_wall"],
     conduct: 1,
     onShiftSelect: async () => {
         let ans = await _nousersthingsprompt("What elements should this e-void delete?", "")
@@ -3644,12 +3638,12 @@ elements.e_void = {
         if (pixel.charge){
             for (let i = 0; i<adjacentCoords.length;i++){
                 let x = pixel.x+adjacentCoords[i][0]
-                let y = pixel.y+adjacentCoords[i][0]
+                let y = pixel.y+adjacentCoords[i][1]
                 if (!isEmpty(x, y, true)){
                     let otherPixel = pixelMap[x][y]
                     if (typeof pixel.filter != "undefined"){
                         if(isElementInProperty(otherPixel.element, pixel.filter)){deletePixel(otherPixel.x, otherPixel.y)}
-                    } else if (!elements.e_void.ignore.includes(otherPixel.element)){deletePixel(otherPixel.x, otherPixel.y)}
+                    } else if (!elements.e_void.ignore.includes(otherPixel.element) && otherPixel.element != pixel.element){deletePixel(otherPixel.x, otherPixel.y)}
                 }
             }
         }
@@ -4016,7 +4010,7 @@ elements.instant_wire_junction = {
     renderer: function(pixel, ctx){
         let _rgb = getPixelColor(pixel.color);
         let _hsv = RGBtoHSV(parseInt(_rgb[0]), parseInt(_rgb[1]), parseInt(_rgb[2]))
-        _hsv.v = _hsv.v*((Math.max(pixel.iCharge, 0)/9)*0.6+0.4)
+        _hsv.v = _hsv.v*((Math.max(pixel.iCharge, 0)/10)*0.6+0.4)
         let _rgb2 = HSVtoRGB(_hsv.h, _hsv.s, _hsv.v)
         let _hex = RGBToHex([Math.floor(_rgb2.r), Math.floor(_rgb2.g), Math.floor(_rgb2.b)])
         drawSquare(ctx, _hex, pixel.x, pixel.y)
