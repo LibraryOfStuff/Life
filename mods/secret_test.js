@@ -8,5 +8,10 @@ function logHistory() {
 }
 
 gameCanvas.addEventListener("mouseup", () => {
-    logHistory(".");
+    logHistory();
+    console.log(".");
+})
+gameCanvas.addEventListener("touchend", () => {
+    logHistory();
+    console.log(".");
 })
