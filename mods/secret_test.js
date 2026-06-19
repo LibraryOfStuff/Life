@@ -7,11 +7,13 @@ function logHistory() {
     if (stateHistory.length > 10) stateHistory.shift();
 }
 
-gameCanvas.addEventListener("mouseup", () => {
-    logHistory();
-    console.log(".");
-})
-gameCanvas.addEventListener("touchend", () => {
-    logHistory();
-    console.log(".");
+window.addEventListener("load", () => {
+    gameCanvas.addEventListener("mouseup", () => {
+        logHistory();
+        console.log(".");
+    })
+    gameCanvas.addEventListener("touchend", () => {
+        logHistory();
+        console.log(".");
+    })
 })
