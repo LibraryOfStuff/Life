@@ -1,9 +1,9 @@
 window.stateHistory = [];
 
 function logHistory() {
-    if (window.structuredClone === undefined) return;
-
-    stateHistory.push(structuredClone([currentPixels, currentRelations]));
+    stateHistory.push(
+        generateSave(undefined, {keep:["temp","color"]})
+    );
     if (stateHistory.length > 10) stateHistory.shift();
 }
 
