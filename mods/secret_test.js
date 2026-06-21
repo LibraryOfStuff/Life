@@ -1,19 +1,23 @@
-window.stateHistory = [];
+window.historyTimeline = {min: 0, max: 0};
 
-function logHistory() {
-    stateHistory.push(
-        generateSave(undefined, {keep:["temp","color"]})
-    );
-    if (stateHistory.length > 10) stateHistory.shift();
+function historyLog() {
+    historyTimeline[historyTimeline.max] = generateSave(undefined, {keep:["temp","color"], strip:true});
+    historyTimeline.max ++;
+    // if (historyTimeline.length > 10) historyTimeline.shift();
+    if (historyTimeline.max - historyTimeline.min >= 11) {
+        delete historyTimeline[historyTimeline.min];
+        historyTimeline.min ++;
+    };
+    // console.log(historyTimeline)
 }
 
 window.addEventListener("load", () => {
     gameCanvas.addEventListener("mousedown", () => {
-        logHistory();
+        historyLog();
         // console.log(".");
     })
     gameCanvas.addEventListener("touchstart", () => {
-        logHistory();
+        historyLog();
         // console.log(".");
     })
 })
