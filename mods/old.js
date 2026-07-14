@@ -1237,7 +1237,7 @@ runAfterLoad(() => {
     const new_elem = document.createElement("style")
     new_elem.innerHTML = STYLE
 
-    document.querySelector(`link[rel="stylesheet"][href="style.css"]`).replaceWith(new_elem)
+    // document.querySelector(`link[rel="stylesheet"][href="style.css"]`).replaceWith(new_elem)
     // document.querySelectorAll(".XButton").forEach(x => x.innerText = "-")
 
 	// patch_save_to_file()
