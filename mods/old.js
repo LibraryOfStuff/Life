@@ -1231,7 +1231,7 @@ function patch_settings() {
 	)
 	console.debug(toggles_row)
 	shove_up(toggles_row, 7)
-// }
+}
 
 runAfterLoad(() => {
     const new_elem = document.createElement("style")
