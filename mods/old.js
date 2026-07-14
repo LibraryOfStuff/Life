@@ -1200,54 +1200,54 @@ img {
 }
 `
 
-// function shove_up(elem, count) {
-//     for (let i = 0; i < count; i++) {
-//         if(elem.previousElementSibling)
-//             elem.parentNode.insertBefore(elem, elem.previousElementSibling);
-//     }
-// }
+function shove_up(elem, count) {
+    for (let i = 0; i < count; i++) {
+        if(elem.previousElementSibling)
+            elem.parentNode.insertBefore(elem, elem.previousElementSibling);
+    }
+}
 
-// function patch_save_to_file(){
-// 	const toggles_row = document.querySelector("#savePromptMenu .toggles-row")
-//     const save_include_lbl = document.getElementById("saveInclude")
+function patch_save_to_file(){
+	const toggles_row = document.querySelector("#savePromptMenu .toggles-row")
+    const save_include_lbl = document.getElementById("saveInclude")
 
-//     toggles_row.style.display = "inline"
-//     save_include_lbl.innerText = "Include:"
+    toggles_row.style.display = "inline"
+    save_include_lbl.innerText = "Include:"
 
-//     shove_up(save_include_lbl, 4)
-//     shove_up(toggles_row, 4)
-//     save_include_lbl.before(document.createElement("br"))
-//     toggles_row.after(document.createElement("br"))
+    shove_up(save_include_lbl, 4)
+    shove_up(toggles_row, 4)
+    save_include_lbl.before(document.createElement("br"))
+    toggles_row.after(document.createElement("br"))
 
-// 	document.getElementById("saveAuthorLabel").innerText += ":"
-// 	document.getElementById("saveDescLabel").innerText   += ":"
-// 	document.getElementById("saveNameLabel").innerText   += ":"
-// }
+	document.getElementById("saveAuthorLabel").innerText += ":"
+	document.getElementById("saveDescLabel").innerText   += ":"
+	document.getElementById("saveNameLabel").innerText   += ":"
+}
 
-// function patch_settings() {
-// 	const toggles_row = document.querySelector(
-// 		"#betterSettings\\/div\\/general.toggles-row .toggles-row,"+
-// 		"#settingsMenu .toggles-row"
-// 	)
-// 	console.debug(toggles_row)
-// 	shove_up(toggles_row, 7)
+function patch_settings() {
+	const toggles_row = document.querySelector(
+		"#betterSettings\\/div\\/general.toggles-row .toggles-row,"+
+		"#settingsMenu .toggles-row"
+	)
+	console.debug(toggles_row)
+	shove_up(toggles_row, 7)
 // }
 
 runAfterLoad(() => {
     const new_elem = document.createElement("style")
     new_elem.innerHTML = STYLE
 
-    // document.querySelector(`link[rel="stylesheet"][href="style.css"]`).replaceWith(new_elem)
-    // document.querySelectorAll(".XButton").forEach(x => x.innerText = "-")
+    document.querySelector(`link[rel="stylesheet"]`).replaceWith(new_elem)
+    document.querySelectorAll(".XButton").forEach(x => x.innerText = "-")
 
-	// patch_save_to_file()
-	// patch_settings()
+	patch_save_to_file()
+	patch_settings()
 });
 
-// dependOn(
-//     "betterSettings.js", 
-//     () => {
-//         document.querySelectorAll(`input[id^="betterSettings"],select[id^="betterSettings"]`)
-//             .forEach(x => x.classList.add("settingsInput"))
-//     }
-// )
+dependOn(
+    "betterSettings.js", 
+    () => {
+        document.querySelectorAll(`input[id^="betterSettings"],select[id^="betterSettings"]`)
+            .forEach(x => x.classList.add("settingsInput"))
+    }
+)
