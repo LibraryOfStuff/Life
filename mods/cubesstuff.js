@@ -916,7 +916,7 @@ elements.plank = {
     forceSaveColor: true
 }
 
-elements.sand.pressInto = "packed_sand";
+elements.sand.pressInto = "sandstone";
 elements.sand.resistPress = 0.2
 elements.snow.pressInto = "packed_snow";
 elements.snow.resistPress = 0.2
@@ -1197,8 +1197,8 @@ elements.phosphor = {
     state: "solid",
 };
 
-elements.packed_sand.pressInto = "sandstone"
-elements.packed_sand.resistPress = 0.7
+// elements.packed_sand.pressInto = "sandstone"
+// elements.packed_sand.resistPress = 0.7
 elements.packed_snow.pressInto = "ice"
 elements.packed_snow.resistPress = 0.7
 
