@@ -217,6 +217,7 @@ elements.sell = {
     desc: "Exchanges pixels for their market value in Gold Coins"
 }
 elements.seeds.name = "seed";
+eLists.SEEDS.push("grass");
 
 /*
 ~Cloner
