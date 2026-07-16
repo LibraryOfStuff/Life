@@ -103,25 +103,24 @@
         this.multi_input_name = crypto.randomUUID();
       }
       build() {
-        const container = document.createElement("span");
+        const container = document.createElement("div");
+        container.classList.add("zm_multisetting");
         this.settings.forEach((setting, i) => {
           const row_container = document.createElement("div");
           row_container.classList.add("zm_ms_row");
           this.rows.push(row_container);
           const select_btn = document.createElement("button");
           select_btn.classList.add("zm_ms_selbtn");
-          select_btn.innerText = "#";
           const built_item = setting.build();
           built_item.classList.add("zm_ms_item");
           built_item.dataset.index = i.toString();
           row_container.dataset.current = i == this.value ? "true" : "false";
           select_btn.onclick = () => {
             this.set(i);
-            setting.enable();
             for (const setting2 of this.settings) setting2.disable();
+            setting.enable();
             for (const row of this.rows) {
               row.dataset.current = "false";
-              row.querySelectorAll(".zm_ms_item input").forEach((x) => x.setAttribute("disabled", "true"));
             }
             built_item.querySelectorAll("input").forEach((x) => x.removeAttribute("disabled"));
             row_container.dataset.current = "true";
@@ -171,37 +170,10 @@
       onUpdate() {
       }
     }
-    class KeybindInput2 extends Setting {
-      constructor(name, storage_name, default_v, desc) {
-        super(
-          name,
-          storage_name,
-          [2763, 0],
-          false,
-          desc
-        );
-        this.value = default_v;
-      }
-      build() {
-        const container = document.createElement("div");
-        container.classList.add("zm_kbinput");
-        const shift_btn = document.createElement("button");
-        shift_btn.innerText = "S";
-        const ctrl_btn = document.createElement("button");
-        ctrl_btn.innerText = "C";
-        const alt_btn = document.createElement("button");
-        alt_btn.innerText = "A";
-        const input = document.createElement("input");
-        input.classList.add("settingsInput");
-        container.append(ctrl_btn, shift_btn, alt_btn, input);
-        return container;
-      }
-    }
     return {
       Numlist: Numlist2,
       MultiSetting,
-      SettingGroup,
-      KeybindInput: KeybindInput2
+      SettingGroup
     };
   };
 
@@ -220,7 +192,7 @@
     pan_zeroing_en;
     zoom_zeroing_en;
     constructor(on_edit) {
-      const { Numlist: Numlist2, MultiSetting, SettingGroup, KeybindInput: KeybindInput2 } = def_classes();
+      const { Numlist: Numlist2, MultiSetting, SettingGroup } = def_classes();
       const settings_tab = new SettingsTab("zoom.js");
       const validator = () => {
         on_edit.cb(this);
@@ -382,20 +354,8 @@
         zoom_levels,
         this.unl_zoom
       );
-      const tmp = new KeybindInput2(
-        "Keybind",
-        "keybind",
-        {
-          key: "o",
-          ctrl: false,
-          shift: false,
-          alt: false
-        },
-        "le keybind"
-      );
       settings_tab.registerSettings(
         void 0,
-        tmp,
         this.canvas_bkg,
         this.show_pos,
         this.show_floater,
@@ -606,16 +566,13 @@
   };
 
   // assets/numlist.css
-  var numlist_default = "#settingsMenu .zm_nml_btn_container button { font-size: 2em; padding: 0px; margin: 0px;}\r\n#settingsMenu .zm_nml_icontainer { align-self: center; flex-wrap: wrap; }\r\n#settingsMenu .zm_nml_setting { display: grid; grid-template-columns: 7em 1fr;}\r\n\r\n#settingsMenu .zm_nml_setting span {\r\n    input { width: 2.5em; margin-right: 4px; margin-bottom: 4px;}\r\n    \r\n    input:focus {\r\n        outline: none;\r\n        box-shadow: none;\r\n        border-color: white;\r\n    }\r\n}";
+  var numlist_default = "#settingsMenu .zm_nml_btn_container button { font-size: 2em; padding: 0px; margin: 0px;}\r\n#settingsMenu .zm_nml_icontainer { align-self: center; flex-wrap: wrap; }\r\n#settingsMenu .zm_nml_setting { display: grid; grid-template-columns: 7em 1fr;}\r\n\r\n#settingsMenu .zm_nml_setting {\r\n    span { color: #ffffff; }\r\n\r\n    input { width: 2.5em; margin-right: 4px; margin-bottom: 4px;}\r\n    \r\n    input:focus {\r\n        outline: none;\r\n        box-shadow: none;\r\n        border-color: white;\r\n    }\r\n}\r\n";
 
   // assets/main.css
-  var main_default = '#zm_data_div { margin-bottom: 10px }\r\n#canvasDiv   { overflow: hidden; background-color: var(--opac-85) }\r\n\r\n@media(pointer=coarse){\r\n    #zm_floater_container#zm_floater_container { \r\n        width: calc(40% * var(--zm-floater-scale));\r\n        height: auto;\r\n    }\r\n    #zm_floater_container:has(#zm_collapse[data-collapsed="true"]){\r\n        width: calc(40% / 3 * var(--zm-floater-scale));\r\n    }\r\n}\r\n\r\n@media(pointer:coarse) and (orientation:landscape){\r\n    #zm_floater_container#zm_floater_container {\r\n        width: auto;\r\n        top: 5px;\r\n    }\r\n    #zm_floater_container:has(#zm_collapse[data-collapsed="true"]){\r\n        width: calc(40% / 3 * var(--zm-floater-scale));\r\n    }\r\n}\r\n\r\n@media not (pointer: coarse){\r\n    #zm_floater_container:has(#zm_collapse[data-collapsed="true"]) {\r\n        width: calc(33px * var(--zm-floater-scale));\r\n    }\r\n}\r\n\r\n#zm_floater_container:has(#zm_collapse[data-collapsed="true"]) {\r\n    width: calc(33px * var(--zm-floater-scale));\r\n\r\n    button:not(#zm_collapse) { display: none; }\r\n}\r\n\r\n#colorSelector { z-index: 1; right: 5px }\r\n#zm_floater_container {\r\n    position: absolute;\r\n    display: grid;\r\n\r\n    right: 5px;\r\n    bottom: 5px;\r\n\r\n    width: calc(100px * var(--zm-floater-scale));\r\n    max-width:  calc(200px * var(--zm-floater-scale));\r\n    max-height: calc(200px * var(--zm-floater-scale));\r\n    aspect-ratio: 1;\r\n\r\n    border: 2px solid white;\r\n    background-color: black;\r\n    font-size: calc(120% * var(--zm-floater-scale));\r\n\r\n    button { text-align: center; border: 0px solid white }\r\n\r\n    button:where([data-pos="tl"]) { border-width: 0px 2px 2px 0px };\r\n    button:where([data-pos="tr"]) { border-width: 2px 2px 0px 0px };\r\n    button:where([data-pos="bl"]) { border-width: 0px 0px 2px 2px };\r\n    button:where([data-pos="br"]) { border-width: 2px 0px 0px 2px };\r\n}\r\n\r\n#canvasDiv:has(#colorSelector[style *= "block"]) #zm_floater_container {\r\n    bottom: 50px;\r\n}\r\n\r\n.zm_corner { border: 2px solid white; }\r\n\r\n#zm_collapse {\r\n    grid-row: 3;\r\n    grid-column: 3;\r\n}\r\n\r\n#zm_collapse[data-collapsed="true"] {\r\n    grid-row: 1;\r\n    grid-column: 1;\r\n    aspect-ratio: 1;\r\n    border-width: 0px;\r\n}\r\n';
+  var main_default = '#zm_data_div { margin-bottom: 10px }\r\n#canvasDiv   { overflow: hidden; background-color: var(--opac-85) }\r\n\r\n@media(pointer=coarse){\r\n    #zm_floater_container#zm_floater_container { \r\n        width: calc(40% * var(--zm-floater-scale));\r\n        height: auto;\r\n    }\r\n    #zm_floater_container:has(#zm_collapse[data-collapsed="true"]){\r\n        width: calc(40% / 3 * var(--zm-floater-scale));\r\n    }\r\n}\r\n\r\n@media(pointer:coarse) and (orientation:landscape){\r\n    #zm_floater_container#zm_floater_container {\r\n        width: auto;\r\n        top: 5px;\r\n    }\r\n    #zm_floater_container:has(#zm_collapse[data-collapsed="true"]){\r\n        width: calc(40% / 3 * var(--zm-floater-scale));\r\n    }\r\n}\r\n\r\n@media not (pointer: coarse){\r\n    #zm_floater_container:has(#zm_collapse[data-collapsed="true"]) {\r\n        width: calc(33px * var(--zm-floater-scale));\r\n    }\r\n}\r\n\r\n#zm_floater_container:has(#zm_collapse[data-collapsed="true"]) {\r\n    width: calc(33px * var(--zm-floater-scale));\r\n\r\n    button:not(#zm_collapse) { display: none; }\r\n}\r\n\r\n#colorSelector { z-index: 1; right: 5px }\r\n#zm_floater_container {\r\n    position: absolute;\r\n    display: grid;\r\n\r\n    right: 5px;\r\n    bottom: 5px;\r\n\r\n    width: calc(100px * var(--zm-floater-scale));\r\n    max-width:  calc(200px * var(--zm-floater-scale));\r\n    max-height: calc(200px * var(--zm-floater-scale));\r\n    aspect-ratio: 1;\r\n\r\n    border: 2px solid white;\r\n    background-color: black;\r\n    font-size: calc(120% * var(--zm-floater-scale));\r\n\r\n    button { text-align: center; border: 0px solid white }\r\n\r\n    button:where([data-pos="tl"]) { border-width: 0px 2px 2px 0px };\r\n    button:where([data-pos="tr"]) { border-width: 2px 2px 0px 0px };\r\n    button:where([data-pos="bl"]) { border-width: 0px 0px 2px 2px };\r\n    button:where([data-pos="br"]) { border-width: 2px 0px 0px 2px };\r\n}\r\n\r\n#canvasDiv:has(#colorSelector[style *= "block"]) #zm_floater_container {\r\n    bottom: 50px;\r\n}\r\n\r\n.zm_corner { border: 2px solid white; }\r\n\r\n#zm_collapse {\r\n    grid-row: 3;\r\n    grid-column: 3;\r\n}\r\n\r\n#zm_collapse[data-collapsed="true"] {\r\n    grid-row: 1;\r\n    grid-column: 1;\r\n    aspect-ratio: 1;\r\n    border-width: 0px;\r\n}\r\n\r\n#betterSettings\\/div\\/zoom\\.js .setting-span {\r\n    display: grid;\r\n    grid-template-columns: 230px 1fr;\r\n\r\n    &:has(> .toggleInput:first-child) {\r\n        display: grid\r\n    }\r\n\r\n    input[type="color"] { width: 100%; border: none } \r\n\r\n    .toggleInput {\r\n        padding-right: 10%;\r\n        clip-path: none;\r\n\r\n        &:hover { transform: initial; }\r\n    }\r\n}\r\n\r\n#betterSettings\\/div\\/zoom\\.js {\r\n    .betterSettings-categoryTitle {\r\n        display: block;\r\n        margin-top: 0.5em;\r\n        margin-bottom: 0.3em;\r\n    }\r\n\r\n    .zm_multisetting .setting-span {\r\n        grid-template-columns: 210px 1fr;\r\n    }\r\n}\r\n';
 
   // assets/multisetting.css
-  var multisetting_default = '.zm_ms_row {\r\n    display: grid;\r\n    grid-template-columns: 2.2em 1fr;    \r\n}\r\n\r\n.zm_ms_row[data-current="false"] {\r\n    .zm_ms_selbtn { color: transparent }\r\n}\r\n\r\n.zm_ms_selbtn.zm_ms_selbtn:not(#_) {\r\n    align-items: center;\r\n    justify-content: center;\r\n    height: 100%;\r\n    width: calc(100% - 10px);\r\n\r\n    margin-right: 2px;\r\n    padding: 0px;\r\n\r\n    border: 2px solid var(--theme);\r\n    font-size: 1.5em\r\n}';
-
-  // assets/kbinput.css
-  var kbinput_default = ".zm_kbinput {\n    display: inline;\n\n    button:not(#\\9) {\n        background-color: var(--theme-darker);\n        aspect-ratio: 1;\n        width: initial;\n        text-align: center;\n        align-items: center;\n    }\n\n    input {\n        width: initial;\n    }\n}\n";
+  var multisetting_default = '.zm_multisetting {\r\n    margin-top: 0.75em\r\n}\r\n\r\n.zm_ms_row {\r\n    display: grid;\r\n    grid-template-columns: 1.7em 1fr;    \r\n}\r\n\r\n.zm_ms_row[data-current="true"] {\r\n    .zm_ms_selbtn { background: var(--theme) }\r\n}\r\n\r\n.zm_ms_row[data-current="false"] .setting-span {\r\n    opacity: 0.5\r\n}\r\n\r\n.zm_ms_selbtn.zm_ms_selbtn:not(#_) {\r\n    align-items: center;\r\n    justify-content: center;\r\n    height: 100%;\r\n    width: calc(100% - 0.5em);\r\n\r\n    margin-right: 2px;\r\n    padding: 0px;\r\n\r\n    border: 2px solid var(--theme);\r\n    font-size: 1.5em\r\n}\r\n.zm_ms_selbtn:active,.zm_ms_selbtn:active:hover {\r\n    transform: initial;\r\n}\r\n';
 
   // assets/ctrl_info.html
   var ctrl_info_default = "<tr>\r\n    <td>Zoom in/out</td>\r\n    <td>\r\n        <kbd>9</kbd>/\r\n        <kbd>0</kbd>\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td>Pan</td>\r\n    <td>\r\n        <kbd>W</kbd>\r\n        <kbd>A</kbd>\r\n        <kbd>S</kbd>\r\n        <kbd>D</kbd>\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <td>Pan (fast)</td>\r\n    <td>\r\n        <kbd>Shift</kbd> + \r\n        <kbd>W</kbd>\r\n        <kbd>A</kbd>\r\n        <kbd>S</kbd>\r\n        <kbd>D</kbd>\r\n    </td>\r\n</tr>";
@@ -633,13 +590,8 @@
     constructor(settings) {
       this.settings = settings;
       const style_div = document.createElement("style");
-      style_div.innerHTML = main_default;
+      style_div.innerHTML = main_default + numlist_default + multisetting_default;
       document.head.appendChild(style_div);
-      dependOn("betterSettings.js", () => {
-        const style_div2 = document.createElement("style");
-        style_div2.innerHTML = numlist_default + multisetting_default + kbinput_default;
-        document.head.appendChild(style_div2);
-      });
       this.canvas_div = document.getElementById("canvasDiv");
       this.canvas_div.insertAdjacentHTML("beforeend", floater_default);
       this.floater_div = document.getElementById("zm_floater_container");
@@ -671,7 +623,7 @@
         for (const elem of document.querySelectorAll("#betterSettings\\/div\\/zoom\\.js span.setting-span input")) {
           elem.addEventListener(elem.classList.contains("toggleInput") ? "click" : "change", cb);
         }
-        document.querySelectorAll(`#betterSettings\\/div\\/zoom\\.js input[id^=betterSettings]`).forEach((x) => x.classList.add("settingsInput"));
+        document.querySelectorAll(`#betterSettings\\/div\\/zoom\\.js input[id^=betterSettings],select[id^=betterSettings]`).forEach((x) => x.classList.add("settingsInput"));
       });
     }
     update_from_settings() {
@@ -705,3 +657,4 @@
     });
   }, true);
 })();
+//! Bandaid fix to keep the UI normal looking
